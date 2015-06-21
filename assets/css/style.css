@@ -29,31 +29,27 @@ canvas{
     text-align:center;
     font-size:150%
 }
+
 #menu li {
     display:inline-block;
-    margin: 10px;
     color: #000;
-    background:#fff;
-    background: rgba(255,255,255, 0.5);
 }
 #menu li.active{
-    background:#666;
-    background: rgba(0,0,0, 0.5);
     color: #fff;
 }
 #menu li a{
     text-decoration:none;
-    color: #000;
+    color: #a9a9a9;
 }
 #menu li.active a:hover{
-    color: #000;
+    color: #ffffff;
 }
+
 #menu li:hover{
-    background: rgba(255,255,255, 0.8);
 }
 #menu li a,
 #menu li.active a{
-    padding: 9px 18px;
+    padding: 5px;
     display:block;
 }
 #menu li.active a{
