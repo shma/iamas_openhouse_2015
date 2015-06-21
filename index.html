@@ -1,0 +1,164 @@
+<html lang="ja-jp" dir="ltr" xmlns:og="http://ogp.me/ns/#">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="IAMASOKUHO">
+    <meta name="keywords" content="iamasokuho, iama速報, IAMAS, 情報科学芸術大学院大学">
+    <title>IAMASOKUHO</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/uikit/2.11.0/css/uikit.almost-flat.min.css" rel="stylesheet">
+    <link href="/assets/css/jquery.fullPage.css" rel="stylesheet">
+    <link href="/assets/css/style.css" rel="stylesheet">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/uikit/2.11.0/js/uikit.min.js"></script>
+    <script src="/assets/js/three.min.js"></script>
+    <script src="/assets/js/iamasokuho.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+    
+    <script type="text/javascript" src="assets/js/jquery.fullPage.js"></script>
+    <script type="text/javascript" src="assets/js/jquery.typist.js"></script>
+    <style>
+        body { margin: 0; }
+        canvas { width: 100%; height: 100% }
+    </style>
+</head>
+<body>
+    <script>
+        $(document).ready(function() {
+    
+            var camera, scene, renderer;
+            var mesh;
+            var mesh_masuo;
+            var objects = [];
+    
+            init();
+            animate();
+
+            function init() {
+                renderer = new THREE.WebGLRenderer();
+                renderer.setPixelRatio( window.devicePixelRatio );
+                renderer.setSize( window.innerWidth, window.innerHeight );
+                document.body.appendChild( renderer.domElement );
+    
+                camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
+                camera.position.z = 400;
+    
+                scene = new THREE.Scene();
+    
+                var geometry = new THREE.BoxGeometry( 70, 70, 70 );
+    
+                var texture = THREE.ImageUtils.loadTexture( 'assets/images/iako.png' );
+                texture.anisotropy = renderer.getMaxAnisotropy();
+    
+                var material = new THREE.MeshBasicMaterial( { map: texture } );
+    
+                mesh = new THREE.Mesh( geometry, material );
+                mesh.position.x = -300;
+                scene.add( mesh );
+    
+                // masuo
+                var texture_masuo = THREE.ImageUtils.loadTexture( 'assets/images/masuo.jpg' );
+                texture_masuo.anisotropy = renderer.getMaxAnisotropy();
+    
+                var material_masuo = new THREE.MeshBasicMaterial( { map: texture_masuo } );
+    
+                mesh_masuo = new THREE.Mesh( geometry, material_masuo );
+                mesh_masuo.position.x = 300;
+                scene.add( mesh_masuo );
+
+                objects.push( mesh );
+                objects.push( mesh_masuo );
+    
+                //
+    
+                window.addEventListener( 'resize', onWindowResize, false );
+    
+            }
+    
+            function onWindowResize() {
+    
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+    
+                renderer.setSize( window.innerWidth, window.innerHeight );
+    
+            }
+    
+            function animate() {
+    
+                requestAnimationFrame( animate );
+    
+                mesh.rotation.x += 0.005;
+                mesh.rotation.y += 0.01;
+    
+                mesh_masuo.rotation.x += 0.005;
+                mesh_masuo.rotation.y += 0.01;
+    
+                renderer.render( scene, camera );
+            }
+
+            mesh.callback = function() { 
+                window.open("https://twitter.com/");
+            }
+            mesh_masuo.callback = function() { 
+                window.open("https://twitter.com/");
+            }
+            var raycaster = new THREE.Raycaster();
+            var mouse = new THREE.Vector2();
+            
+            document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+            function onDocumentMouseDown( event ) {
+            
+                event.preventDefault();
+            
+                mouse.x = ( event.clientX / renderer.domElement.clientWidth ) * 2 - 1;
+                mouse.y = - ( event.clientY / renderer.domElement.clientHeight ) * 2 + 1;
+            
+                raycaster.setFromCamera( mouse, camera );
+            
+                var intersects = raycaster.intersectObjects( objects ); 
+            
+                if ( intersects.length > 0 ) {
+            
+                    intersects[0].object.callback();
+            
+                }
+            
+            }
+
+
+            $('#fullpage').fullpage({
+                menu: '#menu',
+                anchors: ['1page', '2page', '3page','4page', '5page'],
+                sectionsColor: ['none', 'none', 'none', 'none', '#000'],
+                afterLoad: function(anchorLink, index){
+                    console.log("finish load");
+                }
+            });
+        });
+    </script>
+    <ul id="menu" style="text-align:left;">
+        <li data-menuanchor="1page" class="active"><a href="#1page">First slide</a></li>
+        <li data-menuanchor="2page"><a href="#2page">Second slide</a></li>
+        <li data-menuanchor="3page"><a href="#3page">Third slide</a></li>
+        <li data-menuanchor="4page"><a href="#4page">Third slide</a></li>
+    </ul>
+    <div id="fullpage">
+        <div class="section active" id="section0"><p class="i-p">マス男: こんな感じなんだけど、ちょっとありきたりかなーと思って...</p></div>
+        <div class="section" id="section1"><p class="i-p">イア子: いや...こっちじゃない？</div>
+        <div class="section" id="section2"><p class="i-p">マス男: そっかー! じゃあこれでいこう! 筋トレ行ってくるねー！</div>
+        <div class="section" id="section3"><p class="i-p">イア子: センスとは...</div>
+        <div class="section" id="section4">
+            <p class="i-p">
+            こうしてIAMAS OPEN HOUSE 2015の非公式Webサイトが立ち上がった!<br><br>
+            イア子とマス男は、毎日IAMASの紹介を続けることが出来るのか！？<br><br>
+            IAMASの知名度は、この1ヶ月で上がっていくのか！？<br><br>
+            IAMAS OPEN HOUSEに受験生は来るのか！？<br><br>
+            7月25日 26日のOPEN HOUSE当日まで、毎日見逃すな!<br><br>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
