@@ -25,23 +25,15 @@
     </style>
 </head>
 <body>
-    <div id="fb-root"></div>
-    <script>(function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3&appId=884387134914356";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
     <script>
         $(document).ready(function() {
+    
             $('head').append(
                 '<style type="text/css">body {display:none;}'
             );
             $(window).load(function() {
                 $('body').fadeIn("slow");
             });
-    
             var camera, scene, renderer;
             var mesh;
             var mesh_masuo;
@@ -58,13 +50,13 @@
 
             var maxParticleCount = 1000;
             var particleCount = 400;
-            var r = 450;
+            var r = 900;
             var rHalf = r / 2;
 
             var effectController = {
                 showDots: true,
                 showLines: true,
-                minDistance: 100,
+                minDistance: 200,
                 limitConnections: false,
                 maxConnections: 100,
                 particleCount: 400
@@ -186,8 +178,8 @@
     
                 mesh = new THREE.Mesh( geometry, material );
                 mesh.position.x = -300;
-                mesh.position.y += 100;
-                //scene.add( mesh );
+                mesh.position.y += 150;
+                scene.add( mesh );
     
                 // masuo
                 var texture_masuo = THREE.ImageUtils.loadTexture( 'assets/images/masuo.jpg' );
@@ -197,8 +189,8 @@
     
                 mesh_masuo = new THREE.Mesh( geometry, material_masuo );
                 mesh_masuo.position.x = 300;
-                mesh_masuo.position.y += 100;
-                //scene.add( mesh_masuo ); 
+                mesh_masuo.position.y += 150;
+                scene.add( mesh_masuo ); 
                 objects.push( mesh );
                 objects.push( mesh_masuo );
     
@@ -285,6 +277,7 @@
                     }
                 }
 
+
                 linesMesh.geometry.drawcalls[ 0 ].count = numConnected * 2;
                 linesMesh.geometry.attributes.position.needsUpdate = true;
                 linesMesh.geometry.attributes.color.needsUpdate = true;
@@ -292,7 +285,8 @@
                 pointCloud.geometry.attributes.position.needsUpdate = true;
 
                 requestAnimationFrame( animate );
- 
+    
+    
                 mesh.rotation.x += 0.005;
                 mesh.rotation.y += 0.01;
     
@@ -302,11 +296,37 @@
                 renderer.render( scene, camera );
             }
 
+            mesh.callback = function() { 
+                window.open("https://twitter.com/IAMAS_girl");
+            }
+            mesh_masuo.callback = function() { 
+                window.open("https://twitter.com/IAMAS_boy");
+            }
+            var raycaster = new THREE.Raycaster();
+            var mouse = new THREE.Vector2();
+            
+            document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+            function onDocumentMouseDown( event ) {
+            
+                event.preventDefault();
+            
+                mouse.x = ( event.clientX / renderer.domElement.clientWidth ) * 2 - 1;
+                mouse.y = - ( event.clientY / renderer.domElement.clientHeight ) * 2 + 1;
+            
+                raycaster.setFromCamera( mouse, camera );
+            
+                var intersects = raycaster.intersectObjects( objects ); 
+            
+                if ( intersects.length > 0 ) {
+                    intersects[0].object.callback();
+                }
+            
+            }
 
             $('#fullpage').fullpage({
                 menu: '#menu',
-                anchors: ['', 'archive'],
-                sectionsColor: ['none', '#000'],
+                anchors: ['1page', '2page', '3page','4page', '5page'],
+                sectionsColor: ['none', 'none', 'none', 'none', '#000'],
                 afterLoad: function(anchorLink, index){
                     console.log(index);
                     if (index == 2 || index == 4) {
@@ -328,41 +348,36 @@
                 }
             });
         });
-        $(function() {
-          countDown();
-        });
-        function countDown() {
-        var startDateTime = new Date();
-        var endDateTime = new Date("July 25,2015 09:00:00");
-        var left = endDateTime - startDateTime;
-        var a_day = 24 * 60 * 60 * 1000;
-
-        var d = Math.floor(left / a_day) 
-
-        var h = Math.floor((left % a_day) / (60 * 60 * 1000)) 
-
-        var m = Math.floor((left % a_day) / (60 * 1000)) % 60 
-
-        var s = Math.floor((left % a_day) / 1000) % 60 % 60 
-
-        $("#TimeLeft").text(d + ' days and ' + h + ':' + m + ':' + s + ' left');
-          setTimeout('countDown()', 1000);
-        }
     </script>
     <div id="container"></div>
-    <div class="uk-grid i-head">
-<div class="fb-like" data-href="https://iamasokuho.gifu.jp" data-layout="standard" data-action="like" data-show-faces="false" data-share="false"></div>
+    <div class="i-head">
+        <a href="/">
+            <img src="/assets/images/logo.gif" width="150">
+        </a>
     </div>
-<br>
-<a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     <div id="fullpage">
-        <div class="section active" id="section0">
-            <img src="/assets/images/logo.gif" width="200">
-            <br><br>
-            <a href="http://www.iamas.ac.jp/openhouse/" class="i-archive">OFFICIAL</a>
-            <a href="/archive.html" class="i-archive">ARCHIVE</a>
+        <div class="section active" id="section0"><p class="i-p">マス男: こんな感じなんだけど、ちょっとありきたりかなーと思って...</p></div>
+        <div class="section" id="section1"><p class="i-p">イア子: いや...こっちじゃない？</div>
+        <div class="section" id="section2"><p class="i-p">マス男: そっかー! じゃあこれでいこう! 筋トレ行ってくるねー！</div>
+        <div class="section" id="section3"><p class="i-p">イア子: センスとは...</div>
+        <div class="section" id="section4">
+            <p class="i-p">
+            こうしてIAMAS OPEN HOUSE 2015の非公式Webサイトが立ち上がった!<br><br>
+            イア子とマス男は、毎日IAMASの紹介を続けることが出来るのか！？<br><br>
+            IAMASの知名度は、この1ヶ月で上がっていくのか！？<br><br>
+            IAMAS OPEN HOUSEに受験生は来るのか！？<br><br>
+            7月25日 26日のOPEN HOUSE当日まで、毎日見逃すな!<br><br>
+            </p>
         </div>
+    </div>
+    <div class="uk-text-right">
+    <ul id="menu">
+        <li data-menuanchor="1page" class="active"><a href="#1page" class="uk-icon-circle"></a></li>
+        <li data-menuanchor="2page"><a href="#2page" class="uk-icon-circle"></a></li>
+        <li data-menuanchor="3page"><a href="#3page" class="uk-icon-circle"></a></li>
+        <li data-menuanchor="4page"><a href="#4page" class="uk-icon-circle"></a></li>
+        <li data-menuanchor="5page"><a href="#5page" class="uk-icon-circle"></a></li>
+    </ul>
     </div>
 </body>
 </html>

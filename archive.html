@@ -25,16 +25,9 @@
     </style>
 </head>
 <body>
-    <div id="fb-root"></div>
-    <script>(function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3&appId=884387134914356";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
     <script>
         $(document).ready(function() {
+
             $('head').append(
                 '<style type="text/css">body {display:none;}'
             );
@@ -58,13 +51,13 @@
 
             var maxParticleCount = 1000;
             var particleCount = 400;
-            var r = 450;
+            var r = 900;
             var rHalf = r / 2;
 
             var effectController = {
                 showDots: true,
                 showLines: true,
-                minDistance: 100,
+                minDistance: 200,
                 limitConnections: false,
                 maxConnections: 100,
                 particleCount: 400
@@ -89,9 +82,10 @@
             function init() {
                 container = document.getElementById( 'container' );
 
-                renderer = new THREE.WebGLRenderer({antialias: true});
+                renderer = new THREE.WebGLRenderer({antialias: true, alpha:false});
                 renderer.setPixelRatio( window.devicePixelRatio );
                 renderer.setSize( window.innerWidth, window.innerHeight );
+                renderer.setClearColor( new THREE.Color(0x000000) );
                 document.body.appendChild( renderer.domElement );
     
                 camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
@@ -173,7 +167,7 @@
 
                 renderer.gammaInput = true;
                 renderer.gammaOutput = true;
-                renderer.setClearColor( new THREE.Color(0x000000) );
+
 
                 container.appendChild(renderer.domElement);
 
@@ -186,7 +180,7 @@
     
                 mesh = new THREE.Mesh( geometry, material );
                 mesh.position.x = -300;
-                mesh.position.y += 100;
+                mesh.position.y += 200;
                 //scene.add( mesh );
     
                 // masuo
@@ -197,7 +191,7 @@
     
                 mesh_masuo = new THREE.Mesh( geometry, material_masuo );
                 mesh_masuo.position.x = 300;
-                mesh_masuo.position.y += 100;
+                mesh_masuo.position.y += 200;
                 //scene.add( mesh_masuo ); 
                 objects.push( mesh );
                 objects.push( mesh_masuo );
@@ -285,6 +279,7 @@
                     }
                 }
 
+
                 linesMesh.geometry.drawcalls[ 0 ].count = numConnected * 2;
                 linesMesh.geometry.attributes.position.needsUpdate = true;
                 linesMesh.geometry.attributes.color.needsUpdate = true;
@@ -293,6 +288,7 @@
 
                 requestAnimationFrame( animate );
  
+
                 mesh.rotation.x += 0.005;
                 mesh.rotation.y += 0.01;
     
@@ -305,8 +301,8 @@
 
             $('#fullpage').fullpage({
                 menu: '#menu',
-                anchors: ['', 'archive'],
-                sectionsColor: ['none', '#000'],
+                anchors: [''],
+                sectionsColor: ['#000'],
                 afterLoad: function(anchorLink, index){
                     console.log(index);
                     if (index == 2 || index == 4) {
@@ -328,40 +324,21 @@
                 }
             });
         });
-        $(function() {
-          countDown();
-        });
-        function countDown() {
-        var startDateTime = new Date();
-        var endDateTime = new Date("July 25,2015 09:00:00");
-        var left = endDateTime - startDateTime;
-        var a_day = 24 * 60 * 60 * 1000;
-
-        var d = Math.floor(left / a_day) 
-
-        var h = Math.floor((left % a_day) / (60 * 60 * 1000)) 
-
-        var m = Math.floor((left % a_day) / (60 * 1000)) % 60 
-
-        var s = Math.floor((left % a_day) / 1000) % 60 % 60 
-
-        $("#TimeLeft").text(d + ' days and ' + h + ':' + m + ':' + s + ' left');
-          setTimeout('countDown()', 1000);
-        }
     </script>
     <div id="container"></div>
-    <div class="uk-grid i-head">
-<div class="fb-like" data-href="https://iamasokuho.gifu.jp" data-layout="standard" data-action="like" data-show-faces="false" data-share="false"></div>
+    <div class="i-head">
+        <a href="/">
+            <img src="/assets/images/logo.gif" width="150">
+        </a>
     </div>
-<br>
-<a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-    <div id="fullpage">
-        <div class="section active" id="section0">
-            <img src="/assets/images/logo.gif" width="200">
-            <br><br>
-            <a href="http://www.iamas.ac.jp/openhouse/" class="i-archive">OFFICIAL</a>
-            <a href="/archive.html" class="i-archive">ARCHIVE</a>
+    <div class="uk-container i-container">
+        <div class="uk-grid">
+            <!--
+            <a href="/day_one.html">
+            -->
+            <a href="http://iamasokuho.blog.jp">
+            Day 1: 【衝撃】IAMAS（情報科学芸術大学院大学）のオープンハウスすごすぎワロタｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗｗ【画像あり】
+            </a>
         </div>
     </div>
 </body>
